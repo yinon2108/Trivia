@@ -35,6 +35,7 @@ MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ll = findViewById(R.id.main);
 
+
         fbModule = new FbModule(this);
 
         launcher = registerForActivityResult(
