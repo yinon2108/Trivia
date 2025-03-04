@@ -1,9 +1,14 @@
 package com.example.triviab;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
@@ -11,9 +16,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private Button btna1, btna2, btna3, btna4;
     private TextView tvQuestion;
     private TextView tvQuestionNumber, tvPoints, tvGameOver;
-    private Collection collection;
+    private Collection2 collection2;
     private Question currentQuestion;
     private int points = 0;
+    private String backgroundColor = "";
+    private LinearLayout ll;
 
 
     @Override
@@ -21,7 +28,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        collection = new Collection();
+        ll = findViewById(R.id.activity_game);
+
+        collection2 = new Collection2();
+        Intent intent = getIntent();
+        String color = intent.getStringExtra("color");
+        this.backgroundColor = color;
+        setBackgroundColor(color);
 
         tvQuestion = findViewById(R.id.tvQuestion);
         btna1 = findViewById(R.id.btna1);
@@ -40,15 +53,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         tvGameOver.setVisibility(View.INVISIBLE);
 
-        collection.initQuestions();
+        collection2.initQuestions();
 
         nextQuestion();
     }
 
     private void nextQuestion() {
-        if (collection.isNotLastQuestion())
+        if (collection2.isNotLastQuestion())
         {
-            currentQuestion = collection.getNextQuestion();
+            currentQuestion = collection2.getNextQuestion();
             tvQuestion.setText(currentQuestion.getQuestion());
 
             btna1.setText(currentQuestion.getA1());
@@ -90,9 +103,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         tvPoints.setText("points: " + points);
-        if(collection.isNotLastQuestion())
+        if(collection2.isNotLastQuestion())
         {
-            tvQuestionNumber.setText("Question number: " + (collection.getIndex()+1));
+            tvQuestionNumber.setText("Question number: " + (collection2.getIndex()+1));
         }
 
         nextQuestion();
@@ -100,10 +113,40 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     public void reset() {
         this.points = 0;
-        collection.initQuestions();
+        collection2.initQuestions();
         tvPoints.setText("Points:" + 0);
         tvQuestionNumber.setText("Question number: " + 1);
         tvGameOver.setVisibility(View.INVISIBLE);
         this.nextQuestion();
+    }
+
+    public void setBackgroundColor(String color)
+    {
+        switch (color)
+        {
+            case "Red":
+            {
+                ll.setBackgroundColor(Color.RED);
+                break;
+            }
+            case "Blue":
+            {
+                ll.setBackgroundColor(Color.BLUE);
+                break;
+            }
+            case "Pink":
+            {
+                ll.setBackgroundColor(Color.argb(255,255,105,180));
+                break;
+            }
+            case "Yellow":
+            {
+                ll.setBackgroundColor(Color.YELLOW);
+                break;
+            }
+
+            default:
+                ll.setBackgroundColor(Color.WHITE);
+        }
     }
 }

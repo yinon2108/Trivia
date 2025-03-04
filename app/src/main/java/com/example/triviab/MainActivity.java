@@ -60,6 +60,7 @@ MainActivity extends AppCompatActivity {
 
     public void onStartGame(View view) {
         Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("color", backgroundColor);
         startActivity(intent);
     }
 
